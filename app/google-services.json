@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1038334063810",
+    "firebase_url": "https://m-zirae.firebaseio.com",
+    "project_id": "m-zirae",
+    "storage_bucket": "m-zirae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038334063810:android:c0afe531e82c90d7",
+        "android_client_info": {
+          "package_name": "com.wadektech.el_muzarae"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038334063810-0ej708arg7t9t5s42kpg25b9sapeqifn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wadektech.el_muzarae",
+            "certificate_hash": "9cd2f0c5123fd269154b085db5594042277baffa"
+          }
+        },
+        {
+          "client_id": "1038334063810-4tr5ld6uefk9nt8hgsrt6u417c7l2c2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByAvC53Y4JOlXPp6jCA9EIgsfZvmN6skE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038334063810-4tr5ld6uefk9nt8hgsrt6u417c7l2c2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

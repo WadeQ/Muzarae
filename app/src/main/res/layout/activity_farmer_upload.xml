@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".auth.FarmerRegistrationFormActivity">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/calibri"
+                android:shadowColor="#57000000"
+                android:text="Enter Product Details"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="22dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColorHint="#000000">
+
+                <EditText
+                    android:id="@+id/et_product_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/calibri"
+                    android:hint="Enter name of your product"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColorHint="#000000">
+
+                <EditText
+                    android:id="@+id/et_product_qty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/calibri"
+                    android:hint="What quantity are you selling?"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColorHint="#000000">
+
+                <EditText
+                    android:id="@+id/et_product_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/calibri"
+                    android:hint="What is the price per KG?"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColorHint="#000000">
+
+                <EditText
+                    android:id="@+id/et_product_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/calibri"
+                    android:hint="Write a short description of your product."
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/calibri"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/colorAccent"
+                android:text="Click Image Below to upload product image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="4dp"
+                app:cardCornerRadius="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+
+                <ImageButton
+                    android:id="@+id/product_image_upload"
+                    android:src="@drawable/farmers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_product_details_save"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshape"
+                android:fontFamily="@font/calibri"
+                android:text="Save Product Details"
+                android:layout_gravity="center"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="36dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
