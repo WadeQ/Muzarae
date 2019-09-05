@@ -5,44 +5,44 @@ import android.os.Parcelable;
 
 public class ProductDetails implements Parcelable{
     private String profileImage ;
-    private String productImage ;
-    private String sellingPrice ;
+    private String url ;
+    private String price ;
     private String nameOfProduct ;
     private String nameOfFarmer ;
-    private String farmerState ;
-    private String farmerCounty ;
-    private String productQuantity ;
-    private String productDescription ;
-    private String farmerPhoneNumber ;
+    private String state ;
+    private String county ;
+    private String quantity ;
+    private String description ;
+    private String phone ;
 
     public ProductDetails() {
     }
 
-    public ProductDetails(String profileImage,String productImage, String sellingPrice, String nameOfProduct, String nameOfFarmer,
-                          String farmerState, String farmerCounty, String productQuantity, String productDescription, String farmerPhoneNumber) {
-        this.profileImage = profileImage ;
-        this.productImage = productImage;
-        this.sellingPrice = sellingPrice;
+    public ProductDetails(String profileImage, String url, String price, String nameOfProduct, String nameOfFarmer,
+                          String state, String county, String quantity, String description, String phone) {
+        this.profileImage = profileImage;
+        this.url = url;
+        this.price = price;
         this.nameOfProduct = nameOfProduct;
         this.nameOfFarmer = nameOfFarmer;
-        this.farmerState = farmerState;
-        this.farmerCounty = farmerCounty;
-        this.productQuantity = productQuantity;
-        this.productDescription = productDescription;
-        this.farmerPhoneNumber = farmerPhoneNumber ;
+        this.state = state;
+        this.county = county;
+        this.quantity = quantity;
+        this.description = description;
+        this.phone = phone;
     }
 
     protected ProductDetails(Parcel in) {
         profileImage = in.readString();
-        productImage = in.readString();
-        sellingPrice = in.readString();
+        url = in.readString();
+        price = in.readString();
         nameOfProduct = in.readString();
         nameOfFarmer = in.readString();
-        farmerState = in.readString();
-        farmerCounty = in.readString();
-        productQuantity = in.readString();
-        productDescription = in.readString();
-        farmerPhoneNumber = in.readString();
+        state = in.readString();
+        county = in.readString();
+        quantity = in.readString();
+        description = in.readString();
+        phone = in.readString();
     }
 
     public static final Creator<ProductDetails> CREATOR = new Creator<ProductDetails>() {
@@ -57,14 +57,6 @@ public class ProductDetails implements Parcelable{
         }
     };
 
-    public String getFarmerPhoneNumber() {
-        return farmerPhoneNumber;
-    }
-
-    public void setFarmerPhoneNumber(String farmerPhoneNumber) {
-        this.farmerPhoneNumber = farmerPhoneNumber;
-    }
-
     public String getProfileImage() {
         return profileImage;
     }
@@ -73,28 +65,28 @@ public class ProductDetails implements Parcelable{
         this.profileImage = profileImage;
     }
 
-    public String getProductImage() {
-        return productImage;
+    public String getUrl() {
+        return url;
     }
 
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getSellingPrice() {
-        return sellingPrice;
+    public String getPrice() {
+        return price;
     }
 
-    public void setSellingPrice(String sellingPrice) {
-        this.sellingPrice = sellingPrice;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
-    public String getNameOfProduct() {
+    public String getName() {
         return nameOfProduct;
     }
 
-    public void setNameOfProduct(String nameOfProduct) {
-        this.nameOfProduct = nameOfProduct;
+    public void setName(String name) {
+        this.nameOfProduct = name;
     }
 
     public String getNameOfFarmer() {
@@ -105,36 +97,44 @@ public class ProductDetails implements Parcelable{
         this.nameOfFarmer = nameOfFarmer;
     }
 
-    public String getFarmerState() {
-        return farmerState;
+    public String getState() {
+        return state;
     }
 
-    public void setFarmerState(String farmerState) {
-        this.farmerState = farmerState;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getFarmerCounty() {
-        return farmerCounty;
+    public String getCounty() {
+        return county;
     }
 
-    public void setFarmerCounty(String farmerCounty) {
-        this.farmerCounty = farmerCounty;
+    public void setCounty(String county) {
+        this.county = county;
     }
 
-    public String getProductQuantity() {
-        return productQuantity;
+    public String getQuantity() {
+        return quantity;
     }
 
-    public void setProductQuantity(String productQuantity) {
-        this.productQuantity = productQuantity;
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
-    public String getProductDescription() {
-        return productDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override
@@ -145,14 +145,14 @@ public class ProductDetails implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(profileImage);
-        parcel.writeString(productImage);
-        parcel.writeString(sellingPrice);
+        parcel.writeString(url);
+        parcel.writeString(price);
         parcel.writeString(nameOfProduct);
         parcel.writeString(nameOfFarmer);
-        parcel.writeString(farmerState);
-        parcel.writeString(farmerCounty);
-        parcel.writeString(productQuantity);
-        parcel.writeString(productDescription);
-        parcel.writeString(farmerPhoneNumber);
+        parcel.writeString(state);
+        parcel.writeString(county);
+        parcel.writeString(quantity);
+        parcel.writeString(description);
+        parcel.writeString(phone);
     }
 }

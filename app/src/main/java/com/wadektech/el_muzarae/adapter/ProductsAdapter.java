@@ -1,7 +1,6 @@
 package com.wadektech.el_muzarae.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.el_muzarae.R;
 import com.wadektech.el_muzarae.pojos.Products;
+
 import java.util.List;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder> {
@@ -33,38 +30,19 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @Override
     public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_content_details, parent, false);
-        return new ProductsAdapter.ProductsViewHolder(view , onItemListener);
+        return new ProductsViewHolder(view , onItemListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position) {
         Products products = productsList.get(position) ;
-        holder.productPrice.setText(String.valueOf(products.getProductPrice()));
-        holder.productName.setText(products.getProductName());
+        holder.productPrice.setText(products.getPrice());
+        holder.productName.setText(products.getName());
 
-        if (products.getProductImage().equals("")) {
-            holder.productImage.setImageResource(R.drawable.farmers);
-        } else {
+        Picasso.with(context)
+                .load(products.getUrl())
+                .into(holder.productImage);
 
-            Picasso.with(context)
-                    .load(products.getProductImage())
-                    .networkPolicy(NetworkPolicy.OFFLINE)
-                    .into(holder.productImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError() {
-                            Picasso.with (context)
-                                    .load (products.getProductImage())
-                                    //using a default image when images are not loaded
-                                    .error(R.drawable.farmers)
-                                    .into (holder.productImage);
-                        }
-                    });
-        }
     }
 
     @Override

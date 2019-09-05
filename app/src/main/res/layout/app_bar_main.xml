@@ -43,19 +43,9 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginEnd="46dp"
-                    android:layout_marginRight="46dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
                     android:src="@drawable/ic_person_add" />
-
-                <ImageView
-                    android:id="@+id/imv_cart"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/ic_shopping_cart_white_24dp" />
 
             </RelativeLayout>
 
@@ -65,13 +55,5 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_shopping_cart_white_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

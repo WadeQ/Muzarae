@@ -116,63 +116,57 @@ public class FarmerUploadActivity extends AppCompatActivity {
     }
 
     private void uploadProductDetailsToDB(){
+        String photoId = "";
+        if (firebaseUser != null){
+            photoId = firebaseUser.getUid();
+        }
         if (imageUri != null){
             storageReference.child("." + getFileExtension(imageUri)) ;
-            storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            storageReference.child(photoId).putFile(imageUri).addOnSuccessListener(taskSnapshot ->
+                    taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(uri -> {
+                        String url = uri.toString();
+                        String nameOfProduct = productName.getText().toString().trim();
+                        String quantity = productQty.getText().toString().trim();
+                        String price = productPrice.getText().toString().trim();
+                        String description = productDesc.getText().toString().trim();
 
-                    taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String url = uri.toString();
-                            String name = productName.getText().toString().trim();
-                            String quantity = productQty.getText().toString().trim();
-                            String price = productPrice.getText().toString().trim();
-                            String description = productDesc.getText().toString().trim();
+                        final ProgressDialog mDialog = new ProgressDialog(FarmerUploadActivity.this);
+                        mDialog.setTitle("Saving Details");
+                        mDialog.setMessage("Saving your details, please be patient...");
+                        mDialog.show();
 
-                            final ProgressDialog mDialog = new ProgressDialog(FarmerUploadActivity.this);
-                            mDialog.setTitle("Saving Details");
-                            mDialog.setMessage("Saving your details, please be patient...");
-                            mDialog.show();
-
-                            firebaseDatabase = FirebaseDatabase.getInstance();
-                            DatabaseReference dRef = firebaseDatabase.getReference().child("Products");
-
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("url", url);
-                            hashMap.put("name", name);
-                            hashMap.put("quanity", quantity);
-                            hashMap.put("price", price);
-                            hashMap.put("description", description);
-
-                            String userId = null;
-                            if (firebaseUser != null) {
-                                userId = firebaseUser.getUid();
-                            }
-                            dRef.child(userId).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        //we have a response, lets dismiss the dialog
-                                        mDialog.dismiss();
-                                        Toast.makeText(getApplicationContext(), "Items saved successfully..", Toast.LENGTH_SHORT).show();
-                                    } else if (task.getException() != null) {
-                                        Log.d(TAG, "Error saving message is " + task.getException().getMessage());
-                                        Toast.makeText(getApplicationContext(), "Items could not be saved, error "
-                                                + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, "Error is of type " + e.getMessage());
-                                }
-                            });
+                        String userId = "";
+                        if (firebaseUser != null) {
+                            userId = firebaseUser.getUid();
                         }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
+
+                        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("Products");
+
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("url", url);
+                        hashMap.put("name", nameOfProduct);
+                        hashMap.put("quantity", quantity);
+                        hashMap.put("price", price);
+                        hashMap.put("description", description);
+
+                        dRef.child(userId).updateChildren(hashMap).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                //we have a response, lets dismiss the dialog
+                                mDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Items saved successfully..", Toast.LENGTH_SHORT).show();
+
+                            } else if (task.getException() != null) {
+                                Log.d(TAG, "Error saving message is " + task.getException().getMessage());
+                                Toast.makeText(getApplicationContext(), "Items could not be saved, error "
+                                        + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "Error is of type " + e.getMessage());
+                            }
+                        });
+                    })).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(FarmerUploadActivity.this.getApplicationContext(), "Error of type " + e.getMessage(), Toast.LENGTH_SHORT).show();

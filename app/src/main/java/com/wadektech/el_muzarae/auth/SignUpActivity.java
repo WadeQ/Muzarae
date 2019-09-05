@@ -15,8 +15,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.el_muzarae.R;
-import com.wadektech.el_muzarae.pojos.User;
 import com.wadektech.el_muzarae.ui.MainActivity;
+import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText mUsername, mPassword, mEmail ;
@@ -40,58 +40,57 @@ public class SignUpActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance() ;
         firebaseUser = firebaseAuth.getCurrentUser() ;
 
-        mLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username = mUsername.getText().toString().trim() ;
-                String password = mPassword.getText().toString().trim() ;
-                String email = mEmail.getText().toString().trim() ;
+        mLogin.setOnClickListener(view -> {
+            String username = mUsername.getText().toString().trim() ;
+            String password = mPassword.getText().toString().trim() ;
+            String email = mEmail.getText().toString().trim() ;
 
-                if (TextUtils.isEmpty(username)){
-                    mUsername.setError("Field cannot be blank!");
-                } else if (TextUtils.isEmpty(password) && password.length() >= 8) {
-                    mPassword.setError("Password cannot be less than 8 characters");
-                } else if (TextUtils.isEmpty(email)) {
-                    mEmail.setError("Field cannot be blank!");
-                } else {
-                    ProgressDialog mDialog = new ProgressDialog(SignUpActivity.this);
-                    mDialog.setTitle("Registering User");
-                    mDialog.setMessage("Please be patient as we log you in...");
-                    mDialog.show();
+            if (TextUtils.isEmpty(username)){
+                mUsername.setError("Field cannot be blank!");
+            } else if (TextUtils.isEmpty(password) && password.length() >= 8) {
+                mPassword.setError("Password cannot be less than 8 characters");
+            } else if (TextUtils.isEmpty(email)) {
+                mEmail.setError("Field cannot be blank!");
+            } else {
+                ProgressDialog mDialog = new ProgressDialog(SignUpActivity.this);
+                mDialog.setTitle("Registering User");
+                mDialog.setMessage("Please be patient as we log you in...");
+                mDialog.show();
 
-                    firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            String userId = "";
-                            if (firebaseUser != null) {
-                                userId = firebaseUser.getUid();
+                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String userId = "";
+                        if (firebaseUser != null) {
+                            userId = firebaseUser.getUid();
+                        }
+
+                        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+
+                        HashMap<String,Object> user = new HashMap<>();
+                        user.put("user",username);
+                        user.put("email",email);
+
+                        databaseReference.push().setValue(user).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                mDialog.dismiss();
+                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                finish();
+                                startActivity(intent);
+                            } else {
+                                if (task1.getException() != null) {
+                                    Log.d(TAG, "Error " + task1.getException().toString());
+                                }
                             }
 
-                            databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(getApplicationContext(), "Error registering user " + task.getException().toString(), Toast.LENGTH_SHORT).show();
+                        });
 
-                            User user = new User(username,email);
-
-                            databaseReference.setValue(user).addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
-                                    mDialog.dismiss();
-                                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                    finish();
-                                    startActivity(intent);
-                                } else {
-                                    if (task1.getException() != null) {
-                                        Log.d(TAG, "Error " + task1.getException().toString());
-                                    }
-                                }
-
-                            }).addOnFailureListener(e -> {
-                                Toast.makeText(getApplicationContext(), "Error registering user " + task.getException().toString(), Toast.LENGTH_SHORT).show();
-                            });
-
-                        } else {
-                            mDialog.dismiss();
-                            Toast.makeText(getApplicationContext(),"Something went wrong" +task.getException().toString(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
+                    } else {
+                        mDialog.dismiss();
+                        Toast.makeText(getApplicationContext(),"Something went wrong" +task.getException().toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
     }

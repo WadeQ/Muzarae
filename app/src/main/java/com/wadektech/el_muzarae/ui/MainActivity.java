@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,12 +15,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +30,7 @@ import com.wadektech.el_muzarae.auth.FarmerRegistrationFormActivity;
 import com.wadektech.el_muzarae.auth.SignUpActivity;
 import com.wadektech.el_muzarae.pojos.ProductDetails;
 import com.wadektech.el_muzarae.pojos.Products;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +43,18 @@ public class MainActivity extends AppCompatActivity
     List<ProductDetails> productDetailsList ;
     ImageView mAdminDashBoard ;
     NiftyDialogBuilder materialDesignAnimatedDialog;
+    public static final String TAG = "Main Activity";
+    DatabaseReference dRef ;
+    public static final String INTENT_1 = "productImage";
+    public static final String INTENT_2 = "profileImage";
+    public static final String INTENT_3 = "price";
+    public static final String INTENT_4 = "productName";
+    public static final String INTENT_5 = "farmerName";
+    public static final String INTENT_6 = "phone";
+    public static final String INTENT_7 = "quantity";
+    public static final String INTENT_8 = "county";
+    public static final String INTENT_9 = "state";
+    public static final String INTENT_10 = "desc";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +62,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Orders functionality coming soon :)", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         materialDesignAnimatedDialog = NiftyDialogBuilder.getInstance(this);
+
+        FirebaseDatabase.getInstance().getReference().child("Products").keepSynced(true);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -78,33 +81,57 @@ public class MainActivity extends AppCompatActivity
         mRecycler.setHasFixedSize(true);
         mRecycler.setLayoutManager(linearLayoutManager);
 
-        mAdminDashBoard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), FarmerRegistrationFormActivity.class);
-                finish();
-                startActivity(intent);
-            }
+        mAdminDashBoard.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), FarmerRegistrationFormActivity.class);
+            finish();
+            startActivity(intent);
         });
 
         productsList = getAllProductsFromDB() ;
+
+        productDetailsList = getExtraItemsFromDB();
 
         productsAdapter = new ProductsAdapter(productsList, this, this) ;
         mRecycler.setAdapter(productsAdapter);
 
     }
 
+    private List<ProductDetails> getExtraItemsFromDB() {
+        List<ProductDetails> details = new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference().child("Products").keepSynced(true);
+        dRef = FirebaseDatabase.getInstance().getReference().child("Products") ;
+        dRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                details.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    ProductDetails pDetails = snapshot.getValue(ProductDetails.class);
+                    details.add(pDetails);
+                    productsAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return details ;
+    }
+
     private List<Products> getAllProductsFromDB() {
         List<Products> products = new ArrayList<>();
-        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("Products") ;
+        FirebaseDatabase.getInstance().getReference().child("Products").keepSynced(true);
+        dRef = FirebaseDatabase.getInstance().getReference().child("Products") ;
         dRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                   Products items = snapshot.getValue(Products.class);
-                   products.add(items);
+                    Products items = snapshot.getValue(Products.class);
+                    products.add(items);
+
+                    productsAdapter.notifyDataSetChanged();
                 }
-                productsAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -113,7 +140,7 @@ public class MainActivity extends AppCompatActivity
                         + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-       return products ;
+        return products ;
     }
 
     @Override
@@ -123,16 +150,13 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-                        finish();
-                        startActivity(intent);
-                    }
-                }, 0);
-            }
+            new Handler().postDelayed(() -> {
+                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                finish();
+                startActivity(intent);
+            }, 0);
         }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -164,13 +188,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_market) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_orders) {
 
-        } else if (id == R.id.nav_bookmarks) {
-
+        } else if (id == R.id.menuLogout) {
+            animatedDialog();
         } else if (id == R.id.nav_share) {
-
+            shareApp();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -180,19 +206,21 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClicked(int position) {
-      Intent intent = new Intent(MainActivity.this, FarmProductDetailActivity.class);
-        ProductDetails productDetails = productDetailsList.get(position) ;
-        intent.putExtra("profileImage",productDetails.getProfileImage());
-        intent.putExtra("productImage", productDetails.getProductImage());
-        intent.putExtra("price", productDetails.getSellingPrice());
-        intent.putExtra("name", productDetails.getNameOfProduct());
-        intent.putExtra("farmer", productDetails.getNameOfFarmer());
-        intent.putExtra("phone", productDetails.getFarmerPhoneNumber());
-        intent.putExtra("quantity", productDetails.getProductQuantity());
-        intent.putExtra("county", productDetails.getFarmerCounty());
-        intent.putExtra("state", productDetails.getFarmerState());
-        intent.putExtra("desc", productDetails.getProductDescription());
-      startActivity(intent);
+
+        Intent intent = new Intent(MainActivity.this, FarmProductDetailActivity.class);
+        ProductDetails productDetails1 = productDetailsList.get(position);
+        intent.putExtra(INTENT_1,productDetails1.getUrl());
+        intent.putExtra(INTENT_2, productDetails1.getUrl());
+        intent.putExtra(INTENT_3, productDetails1.getPrice());
+        intent.putExtra(INTENT_4, productDetails1.getName());
+        intent.putExtra(INTENT_5, productDetails1.getNameOfFarmer());
+        intent.putExtra(INTENT_6, productDetails1.getPhone());
+        intent.putExtra(INTENT_7, productDetails1.getQuantity());
+        intent.putExtra(INTENT_8, productDetails1.getCounty());
+        intent.putExtra(INTENT_9, productDetails1.getState());
+        intent.putExtra(INTENT_10, productDetails1.getDescription());
+        startActivity(intent);
+
     }
 
     //implement a custom dialog for our logout functionality
@@ -218,4 +246,13 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    //implement a custom dialog for share app functionality
+    public void shareApp() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                "Hey, enjoy el muzarae and share with friends and family");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+    }
 }

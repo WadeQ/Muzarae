@@ -1,41 +1,40 @@
 package com.wadektech.el_muzarae.pojos;
 
 public class Products {
-    private String productImage ;
-    private String productName ;
-    private String productPrice ;
+    private String url ;
+    private String name ;
+    private String price ;
 
     public Products() {
     }
 
-    public Products(String productImage, String productName, String productPrice) {
-        this.productImage = productImage;
-        this.productName = productName;
-        this.productPrice = productPrice;
+    public Products(String url, String name, String price) {
+        this.url = url;
+        this.name = name;
+        this.price = price;
     }
 
-    public String getProductImage() {
-        return productImage;
+    public String getUrl() {
+        return url;
     }
 
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getProductPrice() {
-        return productPrice;
+    public String getPrice() {
+        return price;
     }
 
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
+    public void setPrice(String price) {
+        this.price = price;
     }
-
 }

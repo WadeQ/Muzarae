@@ -40,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/calibri"
                     android:textSize="18sp"
+                    android:textStyle="bold"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:text="Dried maize"
@@ -58,8 +59,9 @@
                         android:layout_weight="50"
                         android:fontFamily="@font/calibri"
                         android:layout_gravity="center"
-                        android:text="price per KG"
-                        android:textColor="#818181" />
+                        android:text="Price per KG"
+                        android:textStyle="bold"
+                        android:textColor="#000000" />
 
                     <TextView
                         android:id="@+id/tv_product_price"
@@ -69,10 +71,10 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/calibri"
-                        android:textColor="#df6a73"
+                        android:textColor="@color/colorAccent"
                         android:textAlignment="textEnd"
                         android:text="40$"
-                        tools:ignore="RtlCompat" />
+                        android:gravity="end" />
 
                 </LinearLayout>
 
