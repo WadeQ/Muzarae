@@ -1,5 +1,6 @@
 package com.wadektech.el_muzarae.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -30,6 +33,7 @@ import com.wadektech.el_muzarae.auth.FarmerRegistrationFormActivity;
 import com.wadektech.el_muzarae.auth.SignUpActivity;
 import com.wadektech.el_muzarae.pojos.ProductDetails;
 import com.wadektech.el_muzarae.pojos.Products;
+import com.wadektech.el_muzarae.viewmodels.ProductsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,8 @@ public class MainActivity extends AppCompatActivity
     public static final String INTENT_8 = "county";
     public static final String INTENT_9 = "state";
     public static final String INTENT_10 = "desc";
+    public ProductsViewModel productsViewModel ;
+    //Context context = MainActivity.this ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +93,17 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         });
 
-        productsList = getAllProductsFromDB() ;
-
         productDetailsList = getExtraItemsFromDB();
 
-        productsAdapter = new ProductsAdapter(productsList, this, this) ;
-        mRecycler.setAdapter(productsAdapter);
+       // List<Products> productsList = new ArrayList<>();
 
+        productsViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
+        productsViewModel.getAllProducts().observe(this, products -> {
+
+            productsAdapter = new ProductsAdapter(products, this, this) ;
+            mRecycler.setAdapter(productsAdapter);
+
+        });
     }
 
     private List<ProductDetails> getExtraItemsFromDB() {
@@ -107,7 +117,6 @@ public class MainActivity extends AppCompatActivity
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     ProductDetails pDetails = snapshot.getValue(ProductDetails.class);
                     details.add(pDetails);
-                    productsAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -118,6 +127,8 @@ public class MainActivity extends AppCompatActivity
         });
         return details ;
     }
+    //shifting to liveData, this method no longer holds.
+    /**
 
     private List<Products> getAllProductsFromDB() {
         List<Products> products = new ArrayList<>();
@@ -129,7 +140,6 @@ public class MainActivity extends AppCompatActivity
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Products items = snapshot.getValue(Products.class);
                     products.add(items);
-
                     productsAdapter.notifyDataSetChanged();
                 }
             }
@@ -142,6 +152,7 @@ public class MainActivity extends AppCompatActivity
         });
         return products ;
     }
+**/
 
     @Override
     public void onBackPressed() {

@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,7 +18,6 @@ import com.wadektech.el_muzarae.R;
 import com.wadektech.el_muzarae.ui.FarmerUploadActivity;
 import com.wadektech.el_muzarae.ui.MainActivity;
 import java.util.HashMap;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FarmerRegistrationFormActivity extends AppCompatActivity {

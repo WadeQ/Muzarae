@@ -59,6 +59,9 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
     // Paging
     implementation "android.arch.paging:runtime:1.0.1"
     testImplementation 'junit:junit:4.12'
