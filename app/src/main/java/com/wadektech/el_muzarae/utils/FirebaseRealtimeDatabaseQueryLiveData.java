@@ -1,5 +1,6 @@
 package com.wadektech.el_muzarae.utils;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,14 +10,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseRealtimeDatabaseQueryLiveData<T> extends LiveData<List<T>> implements ValueEventListener {
     private final Class<T> type ;
     private DatabaseReference databaseReference ;
-    private static final String TAG = "FirebaseRealtimeDatabas";
+    private static final String TAG = "FirebaseRealtimeDB";
+    private Context context ;
 
     public FirebaseRealtimeDatabaseQueryLiveData(Class<T> type, DatabaseReference databaseReference) {
         this.type = type;

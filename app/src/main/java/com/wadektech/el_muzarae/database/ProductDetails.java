@@ -1,25 +1,65 @@
-package com.wadektech.el_muzarae.pojos;
+package com.wadektech.el_muzarae.database;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "products_details")
 public class ProductDetails implements Parcelable{
+
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    private int id ;
+
+    @ColumnInfo(name = "url")
     private String profileImage ;
+
     private String url ;
+
     private String price ;
+
+    @ColumnInfo(name = "name")
     private String nameOfProduct ;
+
     private String nameOfFarmer ;
+
     private String state ;
+
     private String county ;
+
     private String quantity ;
+
     private String description ;
+
     private String phone ;
 
+    @Ignore
     public ProductDetails() {
     }
 
+    @Ignore
     public ProductDetails(String profileImage, String url, String price, String nameOfProduct, String nameOfFarmer,
                           String state, String county, String quantity, String description, String phone) {
+        this.profileImage = profileImage;
+        this.url = url;
+        this.price = price;
+        this.nameOfProduct = nameOfProduct;
+        this.nameOfFarmer = nameOfFarmer;
+        this.state = state;
+        this.county = county;
+        this.quantity = quantity;
+        this.description = description;
+        this.phone = phone;
+    }
+
+    public ProductDetails(int id, String profileImage, String url, String price, String nameOfProduct, String nameOfFarmer,
+                          String state, String county, String quantity, String description, String phone) {
+        this.id = id;
         this.profileImage = profileImage;
         this.url = url;
         this.price = price;
@@ -57,6 +97,14 @@ public class ProductDetails implements Parcelable{
         }
     };
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getProfileImage() {
         return profileImage;
     }
@@ -81,12 +129,12 @@ public class ProductDetails implements Parcelable{
         this.price = price;
     }
 
-    public String getName() {
+    public String getNameOfProduct() {
         return nameOfProduct;
     }
 
-    public void setName(String name) {
-        this.nameOfProduct = name;
+    public void setNameOfProduct(String nameOfProduct) {
+        this.nameOfProduct = nameOfProduct;
     }
 
     public String getNameOfFarmer() {
@@ -144,6 +192,7 @@ public class ProductDetails implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
         parcel.writeString(profileImage);
         parcel.writeString(url);
         parcel.writeString(price);

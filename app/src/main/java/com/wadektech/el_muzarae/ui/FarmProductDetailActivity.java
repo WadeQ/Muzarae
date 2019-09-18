@@ -1,47 +1,26 @@
 package com.wadektech.el_muzarae.ui;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.el_muzarae.R;
-import com.wadektech.el_muzarae.pojos.ProductDetails;
-import com.wadektech.el_muzarae.utils.Constants;
+import com.wadektech.el_muzarae.database.ProductDetails;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_1;
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_10;
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_2;
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_3;
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_4;
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_5;
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_6;
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_7;
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_8;
-import static com.wadektech.el_muzarae.ui.MainActivity.INTENT_9;
+import static com.wadektech.el_muzarae.ui.MainActivity.PRODUCT_DETAILS;
 
 public class FarmProductDetailActivity extends AppCompatActivity {
     ImageButton mBackNavigation;
@@ -77,16 +56,17 @@ public class FarmProductDetailActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        String productImageUrl = intent.getStringExtra(INTENT_1);
-        String profileImageUrl = intent.getStringExtra(INTENT_2);
-        String price = intent.getStringExtra(INTENT_3);
-        String name = intent.getStringExtra(INTENT_4);
-        String farmer = intent.getStringExtra(INTENT_5);
-        String phone = intent.getStringExtra(INTENT_6);
-        String quantity = intent.getStringExtra(INTENT_7);
-        String county = intent.getStringExtra(INTENT_8);
-        String state = intent.getStringExtra(INTENT_9);
-        String desc = intent.getStringExtra(INTENT_10);
+        ProductDetails productDetails = intent.getParcelableExtra(PRODUCT_DETAILS);
+        String productImageUrl = productDetails.getUrl();
+        String profileImageUrl = productDetails.getUrl();
+        String price = productDetails.getPrice();
+        String name = productDetails.getNameOfProduct();
+        String farmer = productDetails.getNameOfFarmer();
+        String phone = productDetails.getPhone();
+        String quantity = productDetails.getQuantity();
+        String county = productDetails.getCounty();
+        String state = productDetails.getState();
+        String desc = productDetails.getDescription();
 
         Picasso.with(context)
                 .load(productImageUrl)

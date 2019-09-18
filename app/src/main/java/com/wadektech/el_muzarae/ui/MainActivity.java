@@ -1,20 +1,18 @@
 package com.wadektech.el_muzarae.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,8 +29,10 @@ import com.wadektech.el_muzarae.R;
 import com.wadektech.el_muzarae.adapter.ProductsAdapter;
 import com.wadektech.el_muzarae.auth.FarmerRegistrationFormActivity;
 import com.wadektech.el_muzarae.auth.SignUpActivity;
-import com.wadektech.el_muzarae.pojos.ProductDetails;
-import com.wadektech.el_muzarae.pojos.Products;
+import com.wadektech.el_muzarae.database.ElMuzaraeDB;
+import com.wadektech.el_muzarae.database.Products;
+import com.wadektech.el_muzarae.database.ProductDetails;
+import com.wadektech.el_muzarae.utils.AppExecutors;
 import com.wadektech.el_muzarae.viewmodels.ProductsViewModel;
 
 import java.util.ArrayList;
@@ -47,20 +47,10 @@ public class MainActivity extends AppCompatActivity
     List<ProductDetails> productDetailsList ;
     ImageView mAdminDashBoard ;
     NiftyDialogBuilder materialDesignAnimatedDialog;
-    public static final String TAG = "Main Activity";
+    public static final String PRODUCT_DETAILS = "product_details";
     DatabaseReference dRef ;
-    public static final String INTENT_1 = "productImage";
-    public static final String INTENT_2 = "profileImage";
-    public static final String INTENT_3 = "price";
-    public static final String INTENT_4 = "productName";
-    public static final String INTENT_5 = "farmerName";
-    public static final String INTENT_6 = "phone";
-    public static final String INTENT_7 = "quantity";
-    public static final String INTENT_8 = "county";
-    public static final String INTENT_9 = "state";
-    public static final String INTENT_10 = "desc";
     public ProductsViewModel productsViewModel ;
-    //Context context = MainActivity.this ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +93,8 @@ public class MainActivity extends AppCompatActivity
             productsAdapter = new ProductsAdapter(products, this, this) ;
             mRecycler.setAdapter(productsAdapter);
 
+            ElMuzaraeDB.getInstance(this).productsDao().saveProducts(products);
+
         });
     }
 
@@ -117,6 +109,13 @@ public class MainActivity extends AppCompatActivity
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     ProductDetails pDetails = snapshot.getValue(ProductDetails.class);
                     details.add(pDetails);
+
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            ElMuzaraeDB.getInstance(getApplicationContext()).productDetailsDao().saveProducts(productDetailsList);
+                        }
+                    });
                 }
             }
 
@@ -219,17 +218,7 @@ public class MainActivity extends AppCompatActivity
     public void onItemClicked(int position) {
 
         Intent intent = new Intent(MainActivity.this, FarmProductDetailActivity.class);
-        ProductDetails productDetails1 = productDetailsList.get(position);
-        intent.putExtra(INTENT_1,productDetails1.getUrl());
-        intent.putExtra(INTENT_2, productDetails1.getUrl());
-        intent.putExtra(INTENT_3, productDetails1.getPrice());
-        intent.putExtra(INTENT_4, productDetails1.getName());
-        intent.putExtra(INTENT_5, productDetails1.getNameOfFarmer());
-        intent.putExtra(INTENT_6, productDetails1.getPhone());
-        intent.putExtra(INTENT_7, productDetails1.getQuantity());
-        intent.putExtra(INTENT_8, productDetails1.getCounty());
-        intent.putExtra(INTENT_9, productDetails1.getState());
-        intent.putExtra(INTENT_10, productDetails1.getDescription());
+        intent.putExtra(PRODUCT_DETAILS, productDetailsList.get(position));
         startActivity(intent);
 
     }

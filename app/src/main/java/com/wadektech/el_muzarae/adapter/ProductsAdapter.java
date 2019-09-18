@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.wadektech.el_muzarae.R;
-import com.wadektech.el_muzarae.pojos.Products;
+import com.wadektech.el_muzarae.database.Products;
 
 import java.util.List;
 

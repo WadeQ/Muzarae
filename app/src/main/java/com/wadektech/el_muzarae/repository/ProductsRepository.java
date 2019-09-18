@@ -2,7 +2,7 @@ package com.wadektech.el_muzarae.repository;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.wadektech.el_muzarae.pojos.Products;
+import com.wadektech.el_muzarae.database.Products;
 import com.wadektech.el_muzarae.utils.FirebaseRealtimeDatabaseQueryLiveData;
 
 public class ProductsRepository {
